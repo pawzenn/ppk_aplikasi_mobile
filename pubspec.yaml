@@ -1,0 +1,45 @@
+name: flutter_application_1
+description: A new Flutter project.
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Firebase
+  firebase_core: ^2.31.1
+  firebase_database: ^10.5.3
+  firebase_auth: ^4.19.5
+
+  # UI & utilitas
+  fl_chart: ^0.68.0
+  google_fonts: ^6.3.1
+  intl: ^0.20.2
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/Bg.png
+    - assets/image/burung.jpg
+    - assets/image/drop.png
+    - assets/image/home.png
+    - assets/image/information.png
+    - assets/image/login.png
+    - assets/image/spash.png
+    - assets/image/splash.png
+    - assets/image/tikus_sawah.jpg
+    - assets/image/user.png

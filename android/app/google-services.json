@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "414317402123",
+    "firebase_url": "https://ppkormawa-3e5f0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ppkormawa-3e5f0",
+    "storage_bucket": "ppkormawa-3e5f0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414317402123:android:3d5f9d91a66f2ec80c4f0e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpY1-FLtsPGtauiNsy2mFyONF9Uu9WYPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414317402123:android:7d44b25ec4d0ba080c4f0e",
+        "android_client_info": {
+          "package_name": "com.ppkormawa.deteksi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpY1-FLtsPGtauiNsy2mFyONF9Uu9WYPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
