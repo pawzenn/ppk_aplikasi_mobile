@@ -22,13 +22,12 @@ class HomeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Halaman Utama',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
+              'Beranda',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
                     color: const Color(0xFF1E7A3F),
                   ),
             ),
-            const SizedBox(width: 8),
             ValueListenableBuilder<String>(
               valueListenable: CurrentLahan.instance.lahanId,
               builder: (context, lahanId, _) {
@@ -56,7 +55,7 @@ class HomeView extends StatelessWidget {
           ],
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
 
         // ===== Kartu Total Hama Hari Ini =====
         ValueListenableBuilder<String>(
@@ -72,40 +71,37 @@ class HomeView extends StatelessWidget {
           },
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
 
         // ===== Tombol Hasil Analisis =====
-        Center(
-          child: SizedBox(
-            width: 220,
-            child: FilledButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AnalysisMenuPage(),
-                  ),
-                );
-              },
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF1E7A3F),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+        FilledButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const AnalysisMenuPage(),
               ),
-              child: const Text(
-                'Hasil Analisis',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
+            );
+          },
+          icon: const Icon(Icons.analytics_rounded, size: 20),
+          label: const Text(
+            'Hasil Analisis',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+            ),
+          ),
+          style: FilledButton.styleFrom(
+            backgroundColor: const Color(0xFF1E7A3F),
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
 
         // ===== Kontrol Suara Burung =====
         ValueListenableBuilder<String>(

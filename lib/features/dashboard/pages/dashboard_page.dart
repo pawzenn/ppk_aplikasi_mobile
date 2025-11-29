@@ -33,22 +33,24 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1E7A3F),
-        foregroundColor: Colors.white,
+        elevation: 0,
+        backgroundColor: const Color.fromARGB(255, 19, 120, 83),
+        surfaceTintColor: Colors.white,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
               'SolarSonic',
               style: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1E7A3F),
               ),
             ),
             const SizedBox(width: 8),
             Image.asset(
               'assets/image/logo_solarsonic.png',
-              height: 46,
+              height: 32,
             ),
           ],
         ),
@@ -61,37 +63,37 @@ class _DashboardState extends State<Dashboard> {
                 padding: const EdgeInsets.only(right: 8),
                 child: InkWell(
                   onTap: () => showLahanPicker(context),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(12),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
+                      horizontal: 12,
+                      vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8F5E9),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.white),
+                      color: const Color(0xFFF1F8F4),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(
-                          Icons.agriculture,
-                          size: 16,
+                          Icons.location_on_rounded,
+                          size: 18,
                           color: Color(0xFF1E7A3F),
                         ),
                         const SizedBox(width: 6),
                         Text(
                           labelFromLahanId(lahanId),
                           style: const TextStyle(
+                            fontSize: 14,
                             color: Color(0xFF1E7A3F),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(width: 4),
                         const Icon(
-                          Icons.expand_more,
-                          size: 18,
+                          Icons.keyboard_arrow_down_rounded,
+                          size: 20,
                           color: Color(0xFF1E7A3F),
                         ),
                       ],
@@ -102,9 +104,15 @@ class _DashboardState extends State<Dashboard> {
             },
           ),
 
-          // ===== MENU LAIN (LOGOUT) =====
+          // ===== MENU LOGOUT =====
           PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
+            icon: const Icon(
+              Icons.more_vert_rounded,
+              color: Color(0xFF1E7A3F),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             onSelected: (value) async {
               if (value == 'logout') {
                 final ok = await _confirmLogout(context);
@@ -122,24 +130,30 @@ class _DashboardState extends State<Dashboard> {
                   } catch (e) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Gagal logout: $e')),
+                        SnackBar(
+                          content: Text('Gagal logout: $e'),
+                          behavior: SnackBarBehavior.floating,
+                        ),
                       );
                     }
                   }
                 }
               }
             },
-            itemBuilder: (context) => const [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: 'logout',
-                child: ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text('Logout'),
+                child: Row(
+                  children: const [
+                    Icon(Icons.logout_rounded, size: 20),
+                    SizedBox(width: 12),
+                    Text('Logout'),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 8),
         ],
       ),
       body: IndexedStack(
@@ -149,15 +163,19 @@ class _DashboardState extends State<Dashboard> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
+        height: 64,
+        backgroundColor: Colors.white,
+        indicatorColor: const Color(0xFFE8F5E9),
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home_rounded),
             label: 'Beranda',
           ),
           NavigationDestination(
-            icon: Icon(Icons.notifications_none),
-            selectedIcon: Icon(Icons.notifications),
+            icon: Icon(Icons.notifications_outlined),
+            selectedIcon: Icon(Icons.notifications_rounded),
             label: 'Notifikasi',
           ),
         ],
@@ -169,7 +187,13 @@ class _DashboardState extends State<Dashboard> {
     return showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Keluar akun?'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        title: const Text(
+          'Keluar akun?',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         content: const Text('Anda yakin ingin logout dari aplikasi?'),
         actions: [
           TextButton(
@@ -178,6 +202,12 @@ class _DashboardState extends State<Dashboard> {
           ),
           FilledButton(
             onPressed: () => Navigator.of(ctx).pop(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Color(0xFF1E7A3F),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             child: const Text('Logout'),
           ),
         ],

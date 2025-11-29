@@ -26,15 +26,38 @@ class NotificationsView extends StatelessWidget {
           ),
           builder: (context, snap) {
             if (snap.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32),
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
 
             final data = snap.data ?? const <EventItem>[];
             if (data.isEmpty) {
-              return const Center(
+              return Center(
                 child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text('Belum ada deteksi dalam 2 hari terakhir.'),
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.notifications_none_rounded,
+                        size: 64,
+                        color: Colors.grey[300],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Belum ada deteksi dalam 2 hari terakhir',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }
@@ -56,28 +79,63 @@ class NotificationsView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (isNewGroup) ...[
-                      Text(
-                        fmtDay.format(e.timeLocal),
-                        style: Theme.of(context).textTheme.titleMedium,
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 4, top: 8, bottom: 8),
+                        child: Text(
+                          fmtDay.format(e.timeLocal),
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[700],
+                                  ),
+                        ),
                       ),
-                      const SizedBox(height: 6),
                     ],
-                    Card(
-                      shape: RoundedRectangleBorder(
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: const Color(0xFFE8F5E9),
+                          width: 1,
+                        ),
                       ),
                       child: ListTile(
-                        leading: const Icon(Icons.pest_control),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        leading: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF1F8F4),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.pest_control_rounded,
+                            color: Color(0xFF1E7A3F),
+                            size: 24,
+                          ),
+                        ),
                         title: const Text(
                           'Hama terdeteksi',
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
                         ),
-                        subtitle: Text(
-                          'Pukul ${fmtTime.format(e.timeLocal)}'
-                          '${e.conf > 0 ? ' • akurasi ${e.conf.toStringAsFixed(2)}' : ''}',
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            'Pukul ${fmtTime.format(e.timeLocal)}'
+                            '${e.conf > 0 ? ' • ${(e.conf * 100).toStringAsFixed(0)}% akurat' : ''}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey[600],
+                            ),
+                          ),
                         ),
-                        // trailing DIHAPUS supaya tidak ada tanda ">"
-                        // trailing: const Icon(Icons.chevron_right),
                       ),
                     ),
                   ],
