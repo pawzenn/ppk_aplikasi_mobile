@@ -18,7 +18,12 @@ class SevenDaysSection extends StatelessWidget {
           stream: watchLast7Days(lahanId: lahanId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32),
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
 
             final items = snapshot.data ?? const <DayDoc>[];
@@ -35,12 +40,27 @@ class SevenDaysSection extends StatelessWidget {
                 items.map((e) => e.total.toDouble()).toList(growable: false);
 
             if (items.isEmpty) {
-              return const Center(
+              return Center(
                 child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text(
-                    'Belum ada data untuk 7 hari terakhir.',
-                    textAlign: TextAlign.center,
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.bar_chart_rounded,
+                        size: 64,
+                        color: Colors.grey[300],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Belum ada data untuk 7 hari terakhir',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -53,21 +73,26 @@ class SevenDaysSection extends StatelessWidget {
                   title: 'Laporan 7 Hari Terakhir',
                   subtitle: 'Total hama per hari',
                 ),
-                const SizedBox(height: 8),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: SizedBox(
-                      height: 200,
-                      child: BarChartSimple(
-                        values: values,
-                        bottomLabels: labels,
-                        color: const Color(0xFF1E7A3F),
+                const SizedBox(height: 12),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
                       ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: SizedBox(
+                    height: 220,
+                    child: BarChartSimple(
+                      values: values,
+                      bottomLabels: labels,
+                      color: const Color(0xFF1E7A3F),
                     ),
                   ),
                 ),

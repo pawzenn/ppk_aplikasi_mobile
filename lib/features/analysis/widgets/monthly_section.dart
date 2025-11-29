@@ -36,60 +36,106 @@ class MonthlySection extends StatelessWidget {
           stream: watchMonthWeeks(month, lahanId: lahanId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32),
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }
 
-            // 5 minggu, masing-masing list DayDoc
             final weeks = snapshot.data ?? List.generate(5, (_) => <DayDoc>[]);
 
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
                 // Header bulan + tombol prev/next
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: onPrev,
-                      icon: const Icon(Icons.chevron_left),
-                    ),
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
-                    ),
-                    IconButton(
-                      onPressed: onNext,
-                      icon: const Icon(Icons.chevron_right),
-                    ),
-                  ],
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF1F8F4),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: onPrev,
+                        icon: const Icon(Icons.chevron_left_rounded),
+                        color: const Color(0xFF1E7A3F),
+                      ),
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF1E7A3F),
+                            ),
+                      ),
+                      IconButton(
+                        onPressed: onNext,
+                        icon: const Icon(Icons.chevron_right_rounded),
+                        color: const Color(0xFF1E7A3F),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 20),
 
                 // Loop per minggu
                 for (var i = 0; i < weeks.length; i++) ...[
-                  Text(
-                    'Minggu ${i + 1} (${_weekLabels[i]})',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, bottom: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 4,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1E7A3F),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
-                  ),
-                  const SizedBox(height: 6),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Minggu ${i + 1}',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xFF1E7A3F),
+                                  ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '(${_weekLabels[i]})',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
                     ),
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: SizedBox(
-                        height: 200,
-                        child: _buildWeekChart(weeks[i]),
-                      ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: SizedBox(
+                      height: 220,
+                      child: _buildWeekChart(weeks[i]),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                 ],
               ],
             );
@@ -99,10 +145,8 @@ class MonthlySection extends StatelessWidget {
     );
   }
 
-  /// Bangun chart 1 minggu: bar per hari (tanggal di bulan).
   Widget _buildWeekChart(List<DayDoc> days) {
     if (days.isEmpty) {
-      // Kalau tidak ada data sama sekali, tampilkan chart kosong dengan 1 bar 0
       return BarChartSimple(
         values: const [0],
         bottomLabels: const ['-'],
@@ -110,19 +154,17 @@ class MonthlySection extends StatelessWidget {
       );
     }
 
-    // Urutkan dulu berdasarkan tanggal key
     final sorted = [...days]..sort((a, b) => a.dateKey.compareTo(b.dateKey));
 
     final labels = <String>[];
     final values = <double>[];
 
     for (final d in sorted) {
-      // dateKey: yyyy-MM-dd -> ambil hari saja
       try {
         final dt = DateTime.parse(d.dateKey);
         labels.add(dt.day.toString());
       } catch (_) {
-        labels.add(d.dateKey); // fallback kalau format beda
+        labels.add(d.dateKey);
       }
       values.add(d.total.toDouble());
     }
